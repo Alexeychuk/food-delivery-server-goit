@@ -1,10 +1,11 @@
 const qs = require('querystring');
 const fs = require('fs');
 const path = require('path');
+const DBINFO = require('./constants');
+const uniqid = require('uniqid');
 
 const signUpRoute = (request, response) => {
 
-  if (request.method === 'POST') {
     let body = '';
 
     request.on('data', function (data) {
@@ -12,25 +13,34 @@ const signUpRoute = (request, response) => {
     });
 
     request.on('end', function () {
-      const userName = body.username;
-      const usersPath = path.join(__dirname, "../../db/users/",`${userName}.json`);
 
-      fs.writeFile(usersPath, JSON.stringify(body), () => {
-        const res = {status:"success",user:body}
-         
-        response.writeHead(200, {"Content-Type": "application/json"});
-        response.write(JSON.stringify(res));
-        response.end();
-      });
+      const dbCallback = (path, (err, data) => {
+        if (err) {
+            response.writeHead(500);
+            response.write(err);
+            response.end();
+            return
+        }
+        const newUserWithId = {...body, id: uniqid() };
+        const users = JSON.parse(data);
+        const usersArray = [...users.users, newUserWithId]
+
+        const newUsers = { users : usersArray};
+
+        fs.writeFile(DBINFO.dbPath, JSON.stringify(newUsers), () => {
+          const res = {status:"success",user:newUserWithId}
+           
+          response.writeHead(200, {"Content-Type": "application/json"});
+          response.write(JSON.stringify(res));
+          response.end();
+        });
+
+       
+    });
+      fs.readFile(DBINFO.dbPath, dbCallback);
+    
 
     });
-
-  } else {
-    response.writeHead(200, {"Content-Type": "text/plain"});
-        response.write("Unknown method");
-        response.end();
-  }
-
 
 };
 
