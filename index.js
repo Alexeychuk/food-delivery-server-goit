@@ -1,4 +1,6 @@
-const app = require('./src/app');
-const { port } = require('./config');
+const startServer = require('./src/server');
+const connectToDB = require('./src/modules/db/connect-db');
+const { port, databaseUrl } = require('./config');
 
-app.listen(port)
+startServer(port);
+connectToDB(databaseUrl);
