@@ -1,4 +1,5 @@
 const Product = require("../../modules/db/schemas/product");
+const Ingredient = require("../../modules/db/schemas/ingredient");
 
 const createProduct = (request, response) => {
   const product = request.body;

@@ -2,6 +2,7 @@ const dbUser = "adminUser";
 const dbPassword = "adminUser";
 
 const config = {
+  secretKey: "secret",
   port: 8000,
   dbUser,
   dbPassword,

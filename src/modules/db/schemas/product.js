@@ -10,7 +10,13 @@ const productSchema = new Schema({
   currency: String,
   creatorId: mongoose.Schema.Types.ObjectId,
   categories: Array,
-  likes: Number
+  likes: Number,
+  ingredients: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Ingredient"
+    }
+  ]
 });
 
 productSchema.plugin(timestamp);
