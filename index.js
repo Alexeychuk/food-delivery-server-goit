@@ -1,4 +1,4 @@
-const startServer = require('./src/server');
+const app = require('./src/app');
 const { port } = require('./config');
 
-startServer(port);
+app.listen(port)
