@@ -19,7 +19,12 @@ const startServer = port => {
     logger(request, response, () => func(request, response));
   });
 
-  server.listen(port);
+  server.listen(port, (err) => {
+    if (err) {
+        return console.log('something bad happened', err)
+    }
+    console.log(`server is listening on ${port}`)
+});
 };
 
 module.exports = startServer;
